@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForeheadApi", "ForeheadApi\ForeheadApi.csproj", "{07FF938F-8B47-4DBE-BD58-6A8B3404B38F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07FF938F-8B47-4DBE-BD58-6A8B3404B38F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07FF938F-8B47-4DBE-BD58-6A8B3404B38F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07FF938F-8B47-4DBE-BD58-6A8B3404B38F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07FF938F-8B47-4DBE-BD58-6A8B3404B38F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0ED6957E-5A4F-4DF4-978E-AF38AE9BC166}
+	EndGlobalSection
+EndGlobal
