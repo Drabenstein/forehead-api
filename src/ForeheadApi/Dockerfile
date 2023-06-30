@@ -6,10 +6,13 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["ForeheadApi/ForeheadApi.csproj", "ForeheadApi/"]
-RUN dotnet restore "ForeheadApi/ForeheadApi.csproj"
+COPY ["src/ForeheadApi/ForeheadApi.csproj", "src/ForeheadApi/"]
+COPY ["src/ForeheadApi.Core/ForeheadApi.Core.csproj", "src/ForeheadApi.Core/"]
+COPY ["src/ForeheadApi.Dtos/ForeheadApi.Dtos.csproj", "src/ForeheadApi.Dtos/"]
+COPY ["src/ForeheadApi.Infrastructure/ForeheadApi.Infrastructure.csproj", "src/ForeheadApi.Infrastructure/"]
+RUN dotnet restore "src/ForeheadApi/ForeheadApi.csproj"
 COPY . .
-WORKDIR "/src/ForeheadApi"
+WORKDIR "/src/src/ForeheadApi"
 RUN dotnet build "ForeheadApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
