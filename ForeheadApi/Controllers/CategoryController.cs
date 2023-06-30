@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ForeheadApi.Infrastructure;
+using ForeheadApi.Infrastructure.Mappings;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ForeheadApi.Controllers;
 
@@ -6,9 +9,33 @@ namespace ForeheadApi.Controllers;
 [Route("categories")]
 public class CategoryController : ControllerBase
 {
-    [HttpGet]
-    public IActionResult GetCategories()
+    private readonly ForeheadDbContext foreheadDbContext;
+
+    public CategoryController(ForeheadDbContext foreheadDbContext)
     {
-        return Ok(Array.Empty<string>());
+        this.foreheadDbContext = foreheadDbContext;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetCategoriesAsync()
+    {
+        var categories = await foreheadDbContext.Categories.AsNoTracking().ProjectToDto().ToArrayAsync();
+        return Ok(categories);
+    }
+
+    [HttpGet]
+    [Route("{categoryId}/questions")]
+    public async Task<IActionResult> GetQuestionForCategory(int categoryId)
+    {
+        var questions = await foreheadDbContext.Questions.AsNoTracking()
+                                                   .Where(x => x.CategoryId == categoryId)
+                                                   .ProjectToDto()
+                                                   .ToArrayAsync();
+        if (questions?.Length > 0)
+        {
+            return Ok(questions);
+        }
+
+        return NotFound();
     }
 }

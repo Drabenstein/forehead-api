@@ -1,8 +1,12 @@
+using ForeheadApi.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContextPool<ForeheadDbContext>(x => x.UseNpgsql(builder.Configuration.GetConnectionString("ForeheadDb")));
 
 var app = builder.Build();
 
