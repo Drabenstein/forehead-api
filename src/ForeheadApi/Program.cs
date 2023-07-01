@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHealthChecks();
 builder.Services
     .AddDbContextPool<ForeheadDbContext>(x => x.UseNpgsql(builder.Configuration.GetConnectionString("ForeheadDb")));
 
@@ -26,6 +27,8 @@ if(app.Environment.IsDevelopment())
 }
 
 app.UseCors(FrontendCorsPolicyName);
+
+app.UseHealthChecks("/health");
 
 app.UseAuthorization();
 
