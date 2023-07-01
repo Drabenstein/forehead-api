@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ForeheadApi.Infrastructure.Migrations
 {
     [DbContext(typeof(ForeheadDbContext))]
-    [Migration("20230630225954_InitialCreate")]
+    [Migration("20230701145650_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -37,6 +37,9 @@ namespace ForeheadApi.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
+
+                    b.Property<bool>("IsHidden")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()

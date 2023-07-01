@@ -23,6 +23,11 @@ public class CategoryEntityTypeConfiguration : IEntityTypeConfiguration<Category
         builder.Property(x => x.ImageUrl)
             .HasMaxLength(500);
 
+        builder.Property(x => x.IsHidden)
+            .IsRequired();
+
+        builder.HasQueryFilter(x => !x.IsHidden);
+
         builder.HasMany(x => x.Questions)
             .WithOne()
             .HasForeignKey(x => x.CategoryId)

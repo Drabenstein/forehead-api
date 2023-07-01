@@ -7,6 +7,7 @@ public record Category
     public int Id { get; init; }
     public required string Name { get; init; }
     public required string ImageUrl { get; init; }
+    public bool IsHidden { get; init; } = false;
     public IReadOnlyCollection<Question> Questions => questions;
 
     public void AddQuestion(Question question)
