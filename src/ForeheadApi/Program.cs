@@ -28,7 +28,7 @@ if(app.Environment.IsDevelopment())
 
 app.UseCors(FrontendCorsPolicyName);
 
-app.UseHealthChecks("/health");
+app.UseHealthChecks("/api/health");
 
 app.UseAuthorization();
 
