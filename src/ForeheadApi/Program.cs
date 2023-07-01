@@ -6,15 +6,26 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContextPool<ForeheadDbContext>(x => x.UseNpgsql(builder.Configuration.GetConnectionString("ForeheadDb")));
+builder.Services
+    .AddDbContextPool<ForeheadDbContext>(x => x.UseNpgsql(builder.Configuration.GetConnectionString("ForeheadDb")));
+
+const string FrontendCorsPolicyName = "Frontend";
+
+builder.Services
+    .AddCors(
+        opt => opt.AddPolicy(
+            FrontendCorsPolicyName,
+            policy => policy.AllowAnyMethod().WithOrigins(builder.Configuration["CorsOrigin"]!)));
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+if(app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(FrontendCorsPolicyName);
 
 app.UseAuthorization();
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ForeheadApi.Controllers;
 
 [ApiController]
-[Route("categories")]
+[Route("api/categories")]
 public class CategoryController : ControllerBase
 {
     private readonly ForeheadDbContext foreheadDbContext;
@@ -15,7 +15,7 @@ public class CategoryController : ControllerBase
     {
         this.foreheadDbContext = foreheadDbContext;
     }
-
+     
     [HttpGet]
     public async Task<IActionResult> GetCategoriesAsync()
     {
