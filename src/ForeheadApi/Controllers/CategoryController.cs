@@ -15,7 +15,7 @@ public class CategoryController : ControllerBase
     {
         this.foreheadDbContext = foreheadDbContext;
     }
-     
+
     [HttpGet]
     public async Task<IActionResult> GetCategoriesAsync()
     {
