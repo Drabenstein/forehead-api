@@ -7,6 +7,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
+builder.Services.AddMemoryCache();
+builder.Services.AddResponseCaching();
 builder.Services
     .AddDbContextPool<ForeheadDbContext>(x => x.UseNpgsql(builder.Configuration.GetConnectionString("ForeheadDb")));
 
@@ -30,8 +32,8 @@ app.UseCors(FrontendCorsPolicyName);
 
 app.UseHealthChecks("/api/health");
 
+app.UseResponseCaching();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

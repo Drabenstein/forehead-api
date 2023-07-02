@@ -1,7 +1,9 @@
-﻿using ForeheadApi.Infrastructure;
+﻿using ForeheadApi.Dtos;
+using ForeheadApi.Infrastructure;
 using ForeheadApi.Infrastructure.Mappings;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace ForeheadApi.Controllers;
 
@@ -10,13 +12,16 @@ namespace ForeheadApi.Controllers;
 public class CategoryController : ControllerBase
 {
     private readonly ForeheadDbContext foreheadDbContext;
+    private readonly IMemoryCache memoryCache;
 
-    public CategoryController(ForeheadDbContext foreheadDbContext)
+    public CategoryController(ForeheadDbContext foreheadDbContext, IMemoryCache memoryCache)
     {
         this.foreheadDbContext = foreheadDbContext;
+        this.memoryCache = memoryCache;
     }
 
     [HttpGet]
+    [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Any, NoStore = false)]
     public async Task<IActionResult> GetCategoriesAsync()
     {
         var categories = await foreheadDbContext.Categories.AsNoTracking().ProjectToDto().ToArrayAsync();
@@ -25,12 +30,23 @@ public class CategoryController : ControllerBase
 
     [HttpGet]
     [Route("{categoryId}/questions")]
+    [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Any, NoStore = false)]
     public async Task<IActionResult> GetQuestionForCategory(int categoryId)
     {
-        var questions = await foreheadDbContext.Questions.AsNoTracking()
-                                                   .Where(x => x.CategoryId == categoryId)
-                                                   .ProjectToDto()
-                                                   .ToArrayAsync();
+        if (!memoryCache.TryGetValue(GetCacheKey(categoryId), out QuestionDto[]? questions))
+        {
+            questions = await foreheadDbContext.Categories
+                                                       .AsNoTracking()
+                                                       .Where(x => x.Id == categoryId)
+                                                       .SelectMany(x => x.Questions)
+                                                       .ProjectToDto()
+                                                       .ToArrayAsync();
+
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                                    .SetSlidingExpiration(TimeSpan.FromSeconds(30));
+            memoryCache.Set(GetCacheKey(categoryId), questions, cacheEntryOptions);
+        }
+
         if (questions?.Length > 0)
         {
             return Ok(questions);
@@ -38,4 +54,6 @@ public class CategoryController : ControllerBase
 
         return NotFound();
     }
+
+    private static string GetCacheKey(int categoryId) => $"category{categoryId}";
 }
