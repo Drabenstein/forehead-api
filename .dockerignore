@@ -19,10 +19,12 @@
 **/node_modules
 **/npm-debug.log
 **/obj
+**/.idea
 **/secrets.dev.yaml
 **/values.dev.yaml
 **/appsettings.*.json
 **/appsettings.json
 **/.cr
+**/.deepsource.toml
 LICENSE
 README.md
