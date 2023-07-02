@@ -16,7 +16,7 @@ builder.Services
     .AddCors(
         opt => opt.AddPolicy(
             FrontendCorsPolicyName,
-            policy => policy.AllowAnyMethod().WithOrigins(builder.Configuration["CorsOrigin"]!)));
+            policy => policy.AllowAnyMethod().WithOrigins(builder.Configuration.GetSection("CorsOrigin").Get<string[]>() ?? Array.Empty<string>())));
 
 var app = builder.Build();
 
