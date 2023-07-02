@@ -14,7 +14,7 @@ COPY src/ForeheadApi.Dtos/ ForeheadApi.Dtos/
 
 FROM build AS publish
 WORKDIR /source/ForeheadApi
-RUN dotnet publish --use-current-runtime --self-contained false --no-restore -o /app
+RUN dotnet publish --use-current-runtime --no-restore -o /app
 
 FROM mcr.microsoft.com/dotnet/nightly/aspnet:7.0-jammy-chiseled AS final
 WORKDIR /app
