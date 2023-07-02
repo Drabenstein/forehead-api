@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace ForeheadApi;
+namespace ForeheadApi.Infrastructure.Telemetry;
 
 public static class DiagnosticsConfig
 {

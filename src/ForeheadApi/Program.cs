@@ -1,10 +1,6 @@
-using ForeheadApi;
 using ForeheadApi.Infrastructure;
+using ForeheadApi.Infrastructure.Telemetry;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,20 +12,7 @@ builder.Services.AddMemoryCache();
 builder.Services.AddResponseCaching();
 builder.Services
     .AddDbContextPool<ForeheadDbContext>(x => x.UseNpgsql(builder.Configuration.GetConnectionString("ForeheadDb")));
-
-builder.Services
-    .AddOpenTelemetry()
-    .WithTracing(
-        tracerProviderBuilder => tracerProviderBuilder.AddSource(DiagnosticsConfig.ActivitySource.Name)
-            .ConfigureResource(res => res.AddService(DiagnosticsConfig.ServiceName))
-            .AddAspNetCoreInstrumentation()
-            .AddNpgsql()
-            .AddOtlpExporter())
-    .WithMetrics(
-        metricsProviderBuilder => metricsProviderBuilder.ConfigureResource(
-            res => res.AddService(DiagnosticsConfig.ServiceName))
-            .AddAspNetCoreInstrumentation()
-            .AddOtlpExporter());
+builder.Services.AddOpenTelemetryServices();
 
 const string FrontendCorsPolicyName = "Frontend";
 
