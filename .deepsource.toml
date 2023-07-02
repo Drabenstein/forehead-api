@@ -12,9 +12,6 @@ name = "sql"
 name = "secrets"
 
 [[analyzers]]
-name = "test-coverage"
-
-[[analyzers]]
 name = "csharp"
 
 [[transformers]]
