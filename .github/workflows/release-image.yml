@@ -19,8 +19,8 @@ jobs:
     - name: Login to GitHub Container Registry
       uses: docker/login-action@v2
       with:
-        registry: ${{ secrets.DOCKER_REPOSITORY_URL }}}
-        username: ${{ secrets.DOCKER_REPOSITORY_USERNAME } }}
+        registry: ${{ secrets.DOCKER_REPOSITORY_URL }}
+        username: ${{ secrets.DOCKER_REPOSITORY_USERNAME }}
         password: ${{ secrets.DOCKER_REPOSITORY_PASSWORD }}
       
     - name: Build and push Docker image
