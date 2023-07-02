@@ -26,5 +26,6 @@
 **/appsettings.json
 **/.cr
 **/.deepsource.toml
+**/.github
 LICENSE
 README.md
