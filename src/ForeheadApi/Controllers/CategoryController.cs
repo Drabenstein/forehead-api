@@ -21,7 +21,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet]
-    [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Any, NoStore = false)]
+    [ResponseCache(Duration = 630, Location = ResponseCacheLocation.Any, NoStore = false)]
     public async Task<IActionResult> GetCategoriesAsync()
     {
         var categories = await foreheadDbContext.Categories.AsNoTracking().ProjectToDto().ToArrayAsync();
@@ -30,7 +30,7 @@ public class CategoryController : ControllerBase
 
     [HttpGet]
     [Route("{categoryId}/questions")]
-    [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Any, NoStore = false)]
+    [ResponseCache(Duration = 630, Location = ResponseCacheLocation.Any, NoStore = false)]
     public async Task<IActionResult> GetQuestionForCategory(int categoryId)
     {
         if (!memoryCache.TryGetValue(GetCacheKey(categoryId), out QuestionDto[]? questions))
