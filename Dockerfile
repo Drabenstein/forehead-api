@@ -11,12 +11,9 @@ COPY src/ForeheadApi/ ForeheadApi/
 COPY src/ForeheadApi.Infrastructure/ ForeheadApi.Infrastructure/
 COPY src/ForeheadApi.Core/ ForeheadApi.Core/
 COPY src/ForeheadApi.Dtos/ ForeheadApi.Dtos/
-
-FROM build AS publish
-WORKDIR /source/ForeheadApi
-RUN dotnet publish --use-current-runtime --no-restore -o /app
+RUN dotnet publish --use-current-runtime -c Release --no-restore -o /app ForeheadApi/ForeheadApi.csproj
 
 FROM mcr.microsoft.com/dotnet/nightly/aspnet:7.0-jammy-chiseled AS final
 WORKDIR /app
-COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "ForeheadApi.dll"]
+COPY --from=build /app .
+ENTRYPOINT ["./ForeheadApi"]
