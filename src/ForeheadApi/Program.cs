@@ -13,6 +13,7 @@ builder.Services.AddResponseCaching();
 builder.Services
     .AddDbContextPool<ForeheadDbContext>(x => x.UseNpgsql(builder.Configuration.GetConnectionString("ForeheadDb")));
 builder.Services.AddOpenTelemetryServices();
+builder.Services.AddResponseCompression();
 
 const string FrontendCorsPolicyName = "Frontend";
 
@@ -35,6 +36,7 @@ app.UseCors(FrontendCorsPolicyName);
 
 app.UseHealthChecks("/api/health");
 
+app.UseResponseCompression();
 app.UseResponseCaching();
 app.UseAuthorization();
 app.MapControllers();
