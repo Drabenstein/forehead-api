@@ -28,13 +28,13 @@ public class RequireApiKeyAttribute : ServiceFilterAttribute
 
             var expectedApiKey = GetExpectedApiKey();
 
-            if (!IsApiKeyValid(expectedApiKey, actualApiKey))
+            if (actualApiKey is null || !IsApiKeyValid(expectedApiKey, actualApiKey))
             {
                 context.Result = new UnauthorizedResult();
             }
         }
 
-        private string GetActualApiKey(HttpContext context)
+        private string? GetActualApiKey(HttpContext context)
         {
             return context.Request.Headers[HeaderNames.ApiKeyHeaderName];
         }

@@ -4,7 +4,7 @@ namespace ForeheadApi.Auth;
 
 public class ApiKeySettings
 {
-    public string ApiKey { get; set; }
+    public string ApiKey { get; set; } = "";
 }
 
 public class ApiKeySettingsValidator : IValidateOptions<ApiKeySettings>
