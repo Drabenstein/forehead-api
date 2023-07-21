@@ -1,4 +1,5 @@
-﻿using ForeheadApi.Dtos;
+﻿using ForeheadApi.Auth;
+using ForeheadApi.Dtos;
 using ForeheadApi.Infrastructure;
 using ForeheadApi.Infrastructure.Mappings;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Caching.Memory;
 namespace ForeheadApi.Controllers;
 
 [ApiController]
+[RequireApiKey]
 [Route("api/categories")]
 public class CategoryController : ControllerBase
 {

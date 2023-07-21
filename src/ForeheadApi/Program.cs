@@ -1,13 +1,19 @@
+using ForeheadApi.Auth;
 using ForeheadApi.Infrastructure;
 using ForeheadApi.Infrastructure.Telemetry;
 using Microsoft.EntityFrameworkCore;
+using static ForeheadApi.Auth.RequireApiKeyAttribute;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddOptions<ApiKeySettings>()
+    .BindConfiguration(nameof(ApiKeySettings))
+    .ValidateOnStart();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
+builder.Services.AddScoped<ApiKeyAuthorizationFilter>();
 builder.Services.AddMemoryCache();
 builder.Services.AddResponseCaching();
 builder.Services
@@ -22,6 +28,7 @@ builder.Services
         opt => opt.AddPolicy(
             FrontendCorsPolicyName,
             policy => policy.AllowAnyMethod()
+                .WithHeaders(HeaderNames.ApiKeyHeaderName)
                 .WithOrigins(builder.Configuration.GetSection("CorsOrigin").Get<string[]>() ?? Array.Empty<string>())));
 
 var app = builder.Build();
