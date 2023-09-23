@@ -23,11 +23,18 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet]
-    [ResponseCache(Duration = 630, Location = ResponseCacheLocation.Any, NoStore = false)]
-    public async Task<IActionResult> GetCategoriesAsync()
+    public async Task<IActionResult> GetCategoriesAsync([FromQuery]bool full = false)
     {
-        var categories = await foreheadDbContext.Categories.AsNoTracking().ProjectToDto().ToArrayAsync();
-        return Ok(categories);
+        if (full)
+        {
+            var categories = await foreheadDbContext.Categories.AsNoTracking().ProjectToCategoryWithQuestionsDto().ToArrayAsync();
+            return Ok(categories);
+        }
+        else
+        {
+            var categories = await foreheadDbContext.Categories.AsNoTracking().ProjectToDto().ToArrayAsync();
+            return Ok(categories); 
+        }
     }
 
     [HttpGet]
