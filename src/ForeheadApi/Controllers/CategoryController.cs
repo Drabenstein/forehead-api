@@ -23,7 +23,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetCategoriesAsync([FromQuery]bool full = false)
+    public async Task<IActionResult> GetCategoriesAsync([FromQuery] bool full = false)
     {
         if (full)
         {
@@ -33,7 +33,7 @@ public class CategoryController : ControllerBase
         else
         {
             var categories = await foreheadDbContext.Categories.AsNoTracking().ProjectToDto().ToArrayAsync();
-            return Ok(categories); 
+            return Ok(categories);
         }
     }
 
