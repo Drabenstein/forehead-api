@@ -1,4 +1,4 @@
-﻿using ForeheadApi.Auth;
+using ForeheadApi.Auth;
 using ForeheadApi.Dtos;
 using ForeheadApi.Infrastructure;
 using ForeheadApi.Infrastructure.Mappings;
@@ -23,9 +23,14 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet]
-    [ResponseCache(Duration = 630, Location = ResponseCacheLocation.Any, NoStore = false)]
-    public async Task<IActionResult> GetCategoriesAsync()
+    public async Task<IActionResult> GetCategoriesAsync([FromQuery] bool full = false)
     {
+        if (full)
+        {
+            var categoriesWithQuestions = await foreheadDbContext.Categories.AsNoTracking().ProjectToCategoryWithQuestionsDto().ToArrayAsync();
+            return Ok(categoriesWithQuestions);
+        }
+
         var categories = await foreheadDbContext.Categories.AsNoTracking().ProjectToDto().ToArrayAsync();
         return Ok(categories);
     }
