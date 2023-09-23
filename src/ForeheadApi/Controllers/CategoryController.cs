@@ -32,7 +32,7 @@ public class CategoryController : ControllerBase
                 categoriesWithQuestions = await foreheadDbContext.Categories.AsNoTracking().ProjectToCategoryWithQuestionsDto().ToArrayAsync();
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
                         .SetAbsoluteExpiration(TimeSpan.FromSeconds(60));
-                memoryCache.Set(CategoryWithQuestionsCacheKey, categoriesWithQuestions, cacheEntryOptions); 
+                memoryCache.Set(CategoryWithQuestionsCacheKey, categoriesWithQuestions, cacheEntryOptions);
             }
 
             return Ok(categoriesWithQuestions);
