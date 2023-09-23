@@ -1,4 +1,4 @@
-﻿using ForeheadApi.Auth;
+using ForeheadApi.Auth;
 using ForeheadApi.Dtos;
 using ForeheadApi.Infrastructure;
 using ForeheadApi.Infrastructure.Mappings;
