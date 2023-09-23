@@ -27,7 +27,14 @@ public class CategoryController : ControllerBase
     {
         if (full)
         {
-            var categoriesWithQuestions = await foreheadDbContext.Categories.AsNoTracking().ProjectToCategoryWithQuestionsDto().ToArrayAsync();
+            if (!memoryCache.TryGetValue(CategoryWithQuestionsCacheKey, out CategoryWithQuestionsDto[] categoriesWithQuestions))
+            {
+                categoriesWithQuestions = await foreheadDbContext.Categories.AsNoTracking().ProjectToCategoryWithQuestionsDto().ToArrayAsync();
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                        .SetAbsoluteExpiration(TimeSpan.FromSeconds(60));
+                memoryCache.Set(CategoryWithQuestionsCacheKey, categoriesWithQuestions, cacheEntryOptions); 
+            }
+
             return Ok(categoriesWithQuestions);
         }
 
@@ -40,7 +47,7 @@ public class CategoryController : ControllerBase
     [ResponseCache(Duration = 630, Location = ResponseCacheLocation.Any, NoStore = false)]
     public async Task<IActionResult> GetQuestionForCategory(int categoryId)
     {
-        if (!memoryCache.TryGetValue(GetCacheKey(categoryId), out QuestionDto[]? questions))
+        if (!memoryCache.TryGetValue(GetQuestionForCategoryCacheKey(categoryId), out QuestionDto[]? questions))
         {
             questions = await foreheadDbContext.Categories
                                                        .AsNoTracking()
@@ -50,8 +57,8 @@ public class CategoryController : ControllerBase
                                                        .ToArrayAsync();
 
             var cacheEntryOptions = new MemoryCacheEntryOptions()
-                                    .SetSlidingExpiration(TimeSpan.FromSeconds(30));
-            memoryCache.Set(GetCacheKey(categoryId), questions, cacheEntryOptions);
+                                    .SetAbsoluteExpiration(TimeSpan.FromSeconds(60));
+            memoryCache.Set(GetQuestionForCategoryCacheKey(categoryId), questions, cacheEntryOptions);
         }
 
         if (questions?.Length > 0)
@@ -62,5 +69,6 @@ public class CategoryController : ControllerBase
         return NotFound();
     }
 
-    private static string GetCacheKey(int categoryId) => $"category{categoryId}";
+    private static string GetQuestionForCategoryCacheKey(int categoryId) => $"questions-{categoryId}";
+    private const string CategoryWithQuestionsCacheKey = "categorywq";
 }
