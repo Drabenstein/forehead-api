@@ -9,7 +9,7 @@ using Microsoft.Extensions.Caching.Memory;
 namespace ForeheadApi.Controllers;
 
 [ApiController]
-[RequireApiKey]
+// [RequireApiKey]
 [Route("api/categories")]
 public class CategoryController : ControllerBase
 {
