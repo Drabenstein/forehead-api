@@ -13,7 +13,7 @@ builder.Services.AddOptions<ApiKeySettings>()
     .ValidateOnStart();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
-builder.Services.AddScoped<ApiKeyAuthorizationFilter>();
+//builder.Services.AddScoped<ApiKeyAuthorizationFilter>();
 builder.Services.AddMemoryCache();
 builder.Services.AddResponseCaching();
 builder.Services
@@ -45,7 +45,7 @@ app.UseHealthChecks("/api/health");
 
 app.UseResponseCompression();
 app.UseResponseCaching();
-app.UseAuthorization();
+//app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
